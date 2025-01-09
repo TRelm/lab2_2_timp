@@ -1,20 +1,27 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <map>
+#include <codecvt>
+#include <locale>
 #include <iostream>
-class modAlphaCipher
+class Cipher
 {
 private:
-	int key;
-	int getValidKey(const int key, const std::wstring & s);
-	std::wstring getValidOpenText(const std::wstring & s);
-	std::wstring getValidCipherText(const std::wstring & s);
+	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> codec;
+	int columns, rows, len_text;
 public:
-	modAlphaCipher()=delete; 
-	modAlphaCipher(int k); 
-	std::wstring encrypt(modAlphaCipher key, std::wstring& open_text); 
-	std::wstring decrypt(modAlphaCipher key, std::wstring& cipher_text);
+	Cipher()=delete;
+	Cipher(const std::wstring & ws_key);
+	std::wstring encrypt(const std::wstring& ws_open_text);
+	std::wstring decrypt(const std::wstring& ws_cipher_text);
+	void set_tableform(const std::wstring& ws_text);
+	void set_key(std::wstring & ws_key);
+	int getValidKey(std::wstring& ws_key);
+	std::wstring getValidOpenText(const std::wstring & ws_open_text);
+	std::wstring getValidCipherText(const std::wstring & ws_cipher_text);
 };
+
 class cipher_error: public std::invalid_argument
 {
 public:
